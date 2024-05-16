@@ -10,6 +10,10 @@ certbot certonly --webroot --webroot-path=/var/www/certbot --email artwist@yande
 echo "Waiting for certs 5 secs"
 sleep 5
 
+if [ ! -f /etc/letsencrypt/options-ssl-nginx.conf ]; then
+    wget https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf -O /etc/letsencrypt/options-ssl-nginx.conf
+fi
+
 # Копирование ssl конфигурации в директории  nginx
 cp /etc/nginx/support/practix-cinema.ru.ssl /etc/nginx/conf.d/practix-cinema.ru.ssl.conf
 sleep 1
