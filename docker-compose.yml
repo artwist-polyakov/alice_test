@@ -32,5 +32,6 @@ services:
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-      - ./nginx/:/etc/nginx/:rw
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw
+      - ./nginx/support:/etc/nginx/support:rw
     entrypoint: "/bin/sh -c '/certbot.sh'"
