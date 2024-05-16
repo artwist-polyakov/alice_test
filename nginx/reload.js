@@ -1,4 +1,4 @@
-function reloadNginx(r) {
+export function reloadNginx(r) {
     r.return(200, "Reloading Nginx...");
 
     // Используем exec для выполнения команды перезагрузки
