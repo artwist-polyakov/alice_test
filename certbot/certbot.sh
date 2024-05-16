@@ -1,8 +1,8 @@
 #!/bin/sh
 
 
-echo "Waiting for nginx 10 secs"
-sleep 10
+echo "Waiting for nginx 5 secs"
+sleep 5
 
 # Получение SSL-сертификатов
 certbot certonly --webroot --webroot-path=/var/www/certbot --email artwist@yandex.ru --agree-tos --no-eff-email -d practix-cinema.ru -d www.practix-cinema.ru
@@ -17,7 +17,13 @@ fi
 # Копирование ssl конфигурации в директории  nginx
 cp /etc/nginx/support/practix-cinema.ru.ssl /etc/nginx/conf.d/practix-cinema.ru.ssl.conf
 sleep 1
-docker exec nginx nginx -s reload
+curl -s http://nginx:8080/reload
 
 # Обновление сертификатов каждые 12 часов
-trap exit TERM; while :; do certbot renew; sleep 12h & wait ${!}; done;
+trap exit TERM; while :; do
+  echo "Renewing certificates..."
+  certbot renew
+  curl -s http://nginx:8080/reload
+  echo "Sleeping for 12h..."
+  sleep 12h & wait ${!}
+done;
