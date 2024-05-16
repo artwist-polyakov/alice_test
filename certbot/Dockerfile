@@ -2,6 +2,6 @@ FROM certbot/certbot
 
 COPY certbot.sh /certbot.sh
 
-CMD chmod +x /certbot.sh
+RUN chmod +x /certbot.sh
 
 ENTRYPOINT ["/certbot.sh"]
