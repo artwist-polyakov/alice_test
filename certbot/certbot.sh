@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sleep(10)
+
 # Получение SSL-сертификатов
 certbot certonly --webroot --webroot-path=/var/www/certbot --email artwist@yandex.ru --agree-tos --no-eff-email -d practix-cinema.ru -d www.practix-cinema.ru
 

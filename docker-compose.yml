@@ -34,4 +34,6 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./nginx/conf.d:/etc/nginx/conf.d:rw
       - ./nginx/support:/etc/nginx/support:rw
+    depends_on:
+      - nginx
     entrypoint: "/bin/sh -c '/certbot.sh'"
