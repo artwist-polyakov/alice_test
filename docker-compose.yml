@@ -25,6 +25,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
+      - ./nginx/reload.js:/etc/nginx/reload.js
     restart: always
 
   certbot:
