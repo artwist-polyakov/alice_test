@@ -29,7 +29,6 @@ services:
       - ./certbot/conf:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
       - ./nginx/reload.js:/etc/nginx/reload.js
-      - ./etc/letsencrypt/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
     restart: always
 
   certbot:
@@ -40,7 +39,6 @@ services:
       - ./certbot/www:/var/www/certbot
       - ./nginx/conf.d:/etc/nginx/conf.d:rw
       - ./nginx/support:/etc/nginx/support:rw
-      - ./etc/letsencrypt/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
     depends_on:
       - nginx
     entrypoint: "/bin/sh -c '/certbot.sh'"
