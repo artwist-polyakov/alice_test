@@ -4,7 +4,7 @@
 certbot certonly --webroot --webroot-path=/var/www/certbot --email artwist@yandex.ru --agree-tos --no-eff-email -d practix-cinema.ru -d www.practix-cinema.ru
 
 # Копирование ssl конфигурации в директории  nginx
-cp /etc/nginx/support/practix-cinema.ru.ssl.conf /etc/nginx/conf.d/
+cp /etc/nginx/support/practix-cinema.ru.ssl /etc/nginx/conf.d/practix-cinema.ru.ssl.conf
 
 docker-compose restart nginx
 
