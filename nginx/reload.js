@@ -5,4 +5,4 @@ function reloadNginx(r) {
     r.variables.exec("/usr/sbin/nginx -s reload");
 }
 
-module.exports = {reloadNginx};
+export default {reloadNginx};
