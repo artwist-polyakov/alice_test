@@ -1,5 +1,6 @@
 function reloadNginx(r) {
-    r.subrequest('/internal/reload', {}, function(reply) {
-        r.return(reply.status, reply.responseBody);
-    });
+    r.return(200, "Reloading Nginx...");
+
+    // Используем exec для выполнения команды перезагрузки
+    r.variables.exec("/usr/sbin/nginx -s reload");
 }
