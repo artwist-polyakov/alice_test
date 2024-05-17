@@ -19,26 +19,11 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
     expose:
       - "80"
       - "443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/letsencrypt:ro
-      - ./certbot/www:/var/www/certbot:ro
-      - ./nginx/reload.js:/etc/nginx/reload.js
+      - ./.certs:/etc/ssl:ro
     restart: always
-
-  certbot:
-    build: ./certbot
-    container_name: certbot
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
-      - ./nginx/conf.d:/etc/nginx/conf.d:rw
-      - ./nginx/support:/etc/nginx/support:rw
-    depends_on:
-      - nginx
-    entrypoint: "/bin/sh -c '/certbot.sh'"

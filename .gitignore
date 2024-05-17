@@ -1,3 +1,5 @@
 .venv
 .idea
+.certs/*.key
+.certs/*.crt
 certbot/conf
