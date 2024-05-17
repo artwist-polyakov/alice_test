@@ -35,18 +35,18 @@ class ResponseModel(BaseModel):
 
 
 @app.post("/")
-async def main(request: RequestModel):
+async def main(request: dict):
     logging.info(f"Received {request}")
 
     response = {
-        "version": request.version,
-        "session": request.session.dict(),
+        "version": request['version'],
+        "session": request['session'],
         "response": {
             "end_session": False
         }
     }
 
-    handle_dialog(request.dict(), response)
+    handle_dialog(request, response)
 
     logging.info('Response: %r', response)
 
