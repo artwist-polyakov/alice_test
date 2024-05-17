@@ -13,9 +13,6 @@ server {
     resolver 8.8.8.8;
     ssl_dhparam /etc/ssl/ssl-dhparams.pem;
 
-    location /.well-known/acme-challenge/ {
-        root /var/www/certbot;
-    }
 
     location / {
         proxy_pass http://flask-app:5000;
