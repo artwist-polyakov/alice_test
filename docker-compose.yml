@@ -5,7 +5,7 @@ services:
     build: .
     container_name: flask-app
     ports:
-      - "5000:5000"
+      - "5555:5555"
     environment:
       - FLASK_APP=api.py
       - FLASK_ENV=production

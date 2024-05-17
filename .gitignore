@@ -2,4 +2,5 @@
 .idea
 .certs/*.key
 .certs/*.crt
+.certs/*.pem
 certbot/conf
