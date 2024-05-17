@@ -35,7 +35,7 @@ class ResponseModel(BaseModel):
 
 
 @app.post("/")
-async def main(request: Request):
+async def main(request: RequestModel):
     logging.info(f"Received {request}")
 
     response = {
