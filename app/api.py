@@ -35,8 +35,8 @@ class ResponseModel(BaseModel):
 
 
 @app.post("/")
-async def main(request: RequestModel):
-    logging.info('Request: %r', request.dict())
+async def main(request: Request):
+    logging.info(f"Received {request}")
 
     response = {
         "version": request.version,
