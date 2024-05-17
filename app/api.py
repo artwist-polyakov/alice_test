@@ -1,7 +1,7 @@
 # coding: utf-8
 # Импортируем модули для работы с JSON и логами.
 import logging
-from typing import Dict
+from typing import Dict, Any
 
 # Импортируем подмодули FastAPI для запуска веб-сервиса.
 from fastapi import FastAPI, Request
@@ -16,37 +16,70 @@ logging.basicConfig(level=logging.DEBUG)
 sessionStorage = {}
 
 
-class Session(BaseModel):
-    new: bool
-    session_id: str
+class Meta(BaseModel):
+    locale: str
+    timezone: str
+    client_id: str
+    interfaces: Dict[str, Any]
+
+
+class User(BaseModel):
     user_id: str
 
 
+class Application(BaseModel):
+    application_id: str
+
+
+class Session(BaseModel):
+    message_id: int
+    session_id: str
+    skill_id: str
+    user: User
+    application: Application
+    new: bool
+    user_id: str
+
+
+class NLU(BaseModel):
+    tokens: list
+    entities: list
+    intents: dict
+
+
 class RequestModel(BaseModel):
-    version: str
+    command: str
+    original_utterance: str
+    nlu: NLU
+    markup: Dict[str, bool]
+    type: str
+
+
+class RequestBody(BaseModel):
+    meta: Meta
     session: Session
-    request: Dict[str, str]
-
-
-class ResponseModel(BaseModel):
+    request: RequestModel
     version: str
-    session: Dict[str, str]
-    response: Dict[str, str]
 
 
 @app.post("/")
-async def main(request: dict):
-    logging.info(f"Received {request}")
+async def main(request: RequestBody):
+    logging.info('Request: %r', request.dict())
 
     response = {
-        "version": request['version'],
-        "session": request['session'],
+        "version": request.version,
+        "session": {
+            "message_id": request.session.message_id,
+            "session_id": request.session.session_id,
+            "skill_id": request.session.skill_id,
+            "user_id": request.session.user_id
+        },
         "response": {
             "end_session": False
         }
     }
 
-    handle_dialog(request, response)
+    handle_dialog(request.dict(), response)
 
     logging.info('Response: %r', response)
 
