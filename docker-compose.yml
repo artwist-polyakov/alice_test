@@ -1,21 +1,18 @@
 version: '3.8'
 
 services:
-  flask-app:
-    build: .
-    container_name: flask-app
+  app:
+    build: ./app
+    container_name: app
     ports:
       - "5555:5555"
-    environment:
-      - FLASK_APP=api.py
-      - FLASK_ENV=production
     restart: always
 
   nginx:
     image: nginx:latest
     container_name: nginx
     depends_on:
-      - flask-app
+      - app
     ports:
       - "80:80"
       - "443:443"

@@ -1,15 +1,14 @@
 # coding: utf-8
-# Импортирует поддержку UTF-8.
-from __future__ import unicode_literals
-
 # Импортируем модули для работы с JSON и логами.
-import json
 import logging
+from typing import Dict
 
-# Импортируем подмодули Flask для запуска веб-сервиса.
-from flask import Flask, request, jsonify
+# Импортируем подмодули FastAPI для запуска веб-сервиса.
+from fastapi import FastAPI, Request
+from pydantic import BaseModel
+from fastapi.responses import JSONResponse
 
-app = Flask(__name__)
+app = FastAPI()
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -17,28 +16,43 @@ logging.basicConfig(level=logging.DEBUG)
 sessionStorage = {}
 
 
-# Задаем параметры приложения Flask.
-@app.route("/", methods=['POST'])
-def main():
-    # Функция получает тело запроса и возвращает ответ.
-    logging.info('Request: %r', request.json)
+class Session(BaseModel):
+    new: bool
+    session_id: str
+    user_id: str
+
+
+class RequestModel(BaseModel):
+    version: str
+    session: Session
+    request: Dict[str, str]
+
+
+class ResponseModel(BaseModel):
+    version: str
+    session: Dict[str, str]
+    response: Dict[str, str]
+
+
+@app.post("/")
+async def main(request: RequestModel):
+    logging.info('Request: %r', request.dict())
 
     response = {
-        "version": request.json['version'],
-        "session": request.json['session'],
+        "version": request.version,
+        "session": request.session.dict(),
         "response": {
             "end_session": False
         }
     }
 
-    handle_dialog(request.json, response)
+    handle_dialog(request.dict(), response)
 
     logging.info('Response: %r', response)
 
-    return jsonify(response)
+    return JSONResponse(content=response)
 
 
-# Функция для непосредственной обработки диалога.
 def handle_dialog(req, res):
     user_id = req['session']['user_id']
 
@@ -76,7 +90,6 @@ def handle_dialog(req, res):
     res['response']['buttons'] = get_suggests(user_id)
 
 
-# Функция возвращает две подсказки для ответа.
 def get_suggests(user_id):
     session = sessionStorage[user_id]
 
@@ -103,4 +116,5 @@ def get_suggests(user_id):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5555)
+    import uvicorn
+    uvicorn.run(app, host='0.0.0.0', port=5555)

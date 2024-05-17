@@ -7,6 +7,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-EXPOSE 5000
+EXPOSE 5555
 
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5555"]
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "5555"]
